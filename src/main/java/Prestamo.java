@@ -1,8 +1,11 @@
+import lombok.Getter;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class Prestamo {
     private Lector cliente;
+    @Getter
     private Copia_Libro libro;
     private LocalDate fechaEmision;
     private LocalDate fechaVencimiento;

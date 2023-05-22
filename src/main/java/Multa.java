@@ -1,6 +1,4 @@
 
-import lombok.Getter;
-
 import java.time.LocalDate;
 
 public class Multa {
