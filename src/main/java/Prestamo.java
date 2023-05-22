@@ -4,10 +4,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Prestamo {
+    @Getter
     private Lector cliente;
     @Getter
     private Copia_Libro libro;
+    @Getter
     private LocalDate fechaEmision;
+    @Getter
     private LocalDate fechaVencimiento;
     private LocalDate fechaDevolucion;
 
@@ -27,19 +30,11 @@ public class Prestamo {
         return diferenciaDias(LocalDate.now(),fechaEmision) > 30;
     }
 
-     public void agregarDevolucion(LocalDate fechaDevolucionPrestamo){
-        fechaDevolucion = fechaDevolucionPrestamo;
-        int diferencia = diferenciaDias(fechaDevolucionPrestamo,fechaEmision);
-
-        if(diferencia > 30){
-            Multa nuevaMulta = new Multa((diferencia * 2L),LocalDate.now());
-            cliente.agregarMulta(nuevaMulta);
-        }
-         Estado estadoNuevo = new Estado(TipoDeEstado.BIBLIOTECA,LocalDate.now());
-         this.libro.cambiarEstado(estadoNuevo);
+    public void agregarFechaDevolucion(LocalDate fecha){
+        fechaDevolucion = fecha;
     }
 
-    private int diferenciaDias(LocalDate fecha1, LocalDate fecha2){
+    public int diferenciaDias(LocalDate fecha1, LocalDate fecha2){
       return fecha1.compareTo(fecha2);
     };
 

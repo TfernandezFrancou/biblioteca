@@ -1,4 +1,5 @@
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -7,6 +8,7 @@ public class Lector {
 
     private String nombre;
     private List<Prestamo> prestamos;
+    @Getter
     private LocalDate fechaFinMulta;
     private List<Multa> multas;
 
@@ -25,9 +27,12 @@ public class Lector {
         return this.prestamos.size();
     }
 
-    public void agregarMulta(Multa multa){
+    public void agregarMulta(Multa multa) {
         multas.add(multa);
         //actualiza la fecha de fin de multa
-        fechaFinMulta = LocalDate.now().plusDays(multa.diasMultado());
+        LocalDate fechaNueva = LocalDate.now().plusDays(multa.diasMultado());
+        if (fechaFinMulta.isBefore(fechaNueva)) {
+            fechaFinMulta = fechaNueva;
+        }
     }
 }

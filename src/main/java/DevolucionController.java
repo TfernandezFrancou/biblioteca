@@ -13,12 +13,28 @@ public class DevolucionController {
         copia.cambiarEstado(estado);
     }
 
-    public void devolverLibro(Integer numero_copia){
+    public Prestamo buscarPrestamo(Copia_Libro copia){
+        return repoPrestamos.buscarPrestamo(copia);
+    }
+
+    public LocalDate devolverLibro(Integer numero_copia){
         Copia_Libro copia = obtenerLibro(numero_copia);
 
         actualizarCopia(copia,new Estado(TipoDeEstado.BIBLIOTECA, LocalDate.now()));
 
+        Prestamo prestamo = buscarPrestamo(copia);
 
+        prestamo.agregarFechaDevolucion(LocalDate.now());
+
+        if(prestamo.estaVencido()){
+            int diferencia = prestamo.diferenciaDias(LocalDate.now(),prestamo.getFechaVencimiento());
+
+            Multa nuevaMulta = new Multa((diferencia * 2L),LocalDate.now());
+            prestamo.getCliente().agregarMulta(nuevaMulta);
+
+        }
+
+        return prestamo.getCliente().getFechaFinMulta();
     }
 
 }
